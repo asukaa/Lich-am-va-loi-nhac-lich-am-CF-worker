@@ -81,3 +81,11 @@ src/
 
 Mỗi lần push lên nhánh `master`, GitHub Actions (`.github/workflows/deploy.yml`) sẽ tự chạy test, build, và
 deploy lên GitHub Pages.
+
+App cũng có thể deploy lên **Cloudflare Workers** (Static Assets) vì toàn bộ là SPA tĩnh, không có backend:
+
+- `wrangler.jsonc` khai báo thư mục `dist/` làm assets và bật `single-page-application` fallback.
+- `npm run deploy` build rồi chạy `wrangler deploy` (cần `npx wrangler login` trước nếu deploy thủ công).
+- `npm run cf:dev` chạy thử local giống môi trường Workers.
+- `.github/workflows/deploy-cloudflare.yml` tự deploy song song với GitHub Pages mỗi khi push `master`, cần
+  khai báo 2 secret trong repo GitHub: `CLOUDFLARE_API_TOKEN` và `CLOUDFLARE_ACCOUNT_ID`.
