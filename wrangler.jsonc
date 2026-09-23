@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "lich-am-va-loi-nhac-lich-am-cf-worker",
+  "name": "lich-am-va-loi-nhac-lich-am",
   "compatibility_date": "2026-09-01",
   "assets": {
     "directory": "./dist",
