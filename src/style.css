@@ -327,9 +327,15 @@ button.delete {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: none;
+  font-weight: 700;
+  color: var(--text-h);
   /* Hide the native number-input spinner so only our custom ▲▼ buttons show. */
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+.year-input-group input.leap-year {
+  color: var(--leap-text);
 }
 
 .year-input-group input::-webkit-outer-spin-button,
@@ -607,6 +613,7 @@ button.delete {
 .year-view-canchi {
   color: var(--text-h);
   font-size: 15px;
+  font-weight: 700;
 }
 
 .year-view-leap-badge {

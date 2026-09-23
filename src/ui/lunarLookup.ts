@@ -204,7 +204,7 @@ function renderYearOverlay(year: number): string {
     .map(
       (m) => `
         <div class="year-view-month">
-          <h3>Tháng ${m}${leapMonthOfYear === m ? " (nhuận)" : ""}</h3>
+          <h3>Tháng ${m}</h3>
           ${renderMonthGrid(year, m, today, { compact: true })}
         </div>
       `,
@@ -230,7 +230,7 @@ function renderYearOverlay(year: number): string {
             <button type="button" id="year-view-year-down" aria-label="Năm trước">▼</button>
           </div>
           <span class="year-view-canchi">
-            ${getYearCanChi(year)}${leapMonthOfYear !== null ? ` <span class="year-view-leap-badge">(nhuận)</span>` : ""}
+            ${getYearCanChi(year)}${leapMonthOfYear !== null ? ` <span class="year-view-leap-badge">(nhuận tháng ${leapMonthOfYear})</span>` : ""}
           </span>
         </div>
         <div class="year-view-grid">${months}</div>
@@ -252,6 +252,12 @@ export function renderLunarLookup(): string {
     .map((m) => `<option value="${m}" ${m === month ? "selected" : ""}>Tháng ${m}</option>`)
     .join("");
 
+  // The nav's year is solar, but "năm nhuận" is a lunar-year concept, so check
+  // leap status against the actual lunar year the displayed month falls in
+  // (not the solar year number itself - they diverge around Tết).
+  const lunarYearOfView = solarToLunar({ year, month, day: 1 }).year;
+  const isLeapYearView = getLeapMonthOfYear(lunarYearOfView) !== null;
+
   return `
     <section class="card lunar-lookup">
       <div class="lookup-header">
@@ -262,6 +268,7 @@ export function renderLunarLookup(): string {
             <input
               id="lookup-year-input"
               type="number"
+              class="${isLeapYearView ? "leap-year" : ""}"
               aria-label="Chọn năm"
               min="${MONTH_MIN_YEAR}"
               max="${MONTH_MAX_YEAR}"

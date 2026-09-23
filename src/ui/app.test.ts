@@ -422,8 +422,8 @@ describe("year calendar view", () => {
 
     expect(document.querySelector(".year-view-backdrop")).not.toBeNull(); // stays open
     expect(document.querySelector(".year-view-canchi")!.textContent).toContain("Quý Mão");
-    // 2023 (âm lịch) has a leap 2nd month - the year view should flag it.
-    expect(document.querySelector(".year-view-canchi")!.textContent).toContain("(nhuận)");
+    // 2023 (âm lịch) has a leap 2nd month - the year view should flag it, naming the month.
+    expect(document.querySelector(".year-view-canchi")!.textContent).toContain("(nhuận tháng 2)");
     expect((document.getElementById("lookup-year-input") as HTMLInputElement).value).toBe("2023");
   });
 
