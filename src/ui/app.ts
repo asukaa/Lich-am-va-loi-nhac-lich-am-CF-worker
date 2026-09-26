@@ -298,11 +298,18 @@ function render(): void {
 
 function renderFooter(): string {
   const year = new Date().getFullYear();
+  const buildDate = new Date(__BUILD_DATE__);
+  const buildDateLabel = `${pad2(buildDate.getDate())}/${pad2(buildDate.getMonth() + 1)}/${buildDate.getFullYear()} ${pad2(buildDate.getHours())}:${pad2(buildDate.getMinutes())}`;
   return `
     <footer class="site-footer">
       <p>© ${year} Âm Lịch Việt Nam. Mã nguồn: <a href="https://github.com/asukaa/Lich-am-va-loi-nhac-lich-am" target="_blank" rel="noopener">github.com/asukaa/Lich-am-va-loi-nhac-lich-am</a></p>
+      <p class="build-info">Bản build: ${__BUILD_HASH__} - ${buildDateLabel}</p>
     </footer>
   `;
+}
+
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
 }
 
 function wireEvents(entries: AnniversaryEntry[], yearsAhead: number): void {

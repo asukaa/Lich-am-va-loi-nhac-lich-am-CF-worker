@@ -785,6 +785,11 @@ td {
   color: var(--accent);
 }
 
+.site-footer .build-info {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
 .donate-row {
   text-align: center;
   margin-top: 20px;

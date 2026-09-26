@@ -1,8 +1,21 @@
+import { execSync } from "node:child_process";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
+function getGitShortHash(): string {
+  try {
+    return execSync("git rev-parse --short HEAD").toString().trim();
+  } catch {
+    return "unknown";
+  }
+}
+
 export default defineConfig({
   base: "/",
+  define: {
+    __BUILD_HASH__: JSON.stringify(getGitShortHash()),
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+  },
   plugins: [
     VitePWA({
       registerType: "autoUpdate",
