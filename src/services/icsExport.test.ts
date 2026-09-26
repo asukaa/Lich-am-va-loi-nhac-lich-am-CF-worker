@@ -140,14 +140,15 @@ describe("buildLunarYearEvents", () => {
     }
   });
 
-  it('titles a plain day "ngày/tháng" and a holiday day "ngày/tháng - tên ngày lễ"', () => {
+  it('titles a plain day "ngày/tháng - tiết khí" and a holiday day "ngày/tháng - tiết khí - tên ngày lễ"', () => {
     const events = buildLunarYearEvents(2026);
     // 2026-02-12 is 25/12 (non-leap) per the earlier-verified ground truth - a plain day, no holiday.
     const plainDay = events.find((e) => e.date.year === 2026 && e.date.month === 2 && e.date.day === 12)!;
-    expect(plainDay.summary).toBe("25/12");
+    expect(plainDay.summary).toBe("25/12 - Lập Xuân");
+    expect(plainDay.description).toBe("");
 
     const tetDay = events.find((e) => e.summary.includes("Tết Nguyên Đán"))!;
-    expect(tetDay.summary).toBe("1/1 - Tết Nguyên Đán");
+    expect(tetDay.summary).toBe("1/1 - Lập Xuân - Tết Nguyên Đán");
   });
 });
 

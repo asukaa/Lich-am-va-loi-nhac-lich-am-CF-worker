@@ -141,10 +141,11 @@ export function buildAllDayIcsCalendar(events: IcsAllDayEventInput[]): string {
 
 /**
  * One all-day event per day of the given solar year, titled with the lunar
- * date ("ngày/tháng", plus "(nhuận)" for a leap month) and the holiday name
- * when that day is one of the well-known lunar festivals, with the day's
- * solar term (tiết khí) added in the description - a full-year lunar date
- * overlay a user can import into any calendar app. Build the .ics text with
+ * date ("ngày/tháng", plus "(nhuận)" for a leap month), the day's solar term
+ * (tiết khí) right after it, and the holiday name when that day is one of
+ * the well-known lunar festivals - all in the summary, so it's visible
+ * without opening the event. A full-year lunar date overlay a user can
+ * import into any calendar app. Build the .ics text with
  * buildAllDayIcsCalendar, not buildIcsCalendar.
  */
 export function buildLunarYearEvents(year: number): IcsAllDayEventInput[] {
@@ -156,9 +157,10 @@ export function buildLunarYearEvents(year: number): IcsAllDayEventInput[] {
     const lunar = solarToLunar(date);
     const holidayName = getLunarHolidayName(lunar);
     const lunarLabel = `${lunar.day}/${lunar.month}${lunar.isLeap ? " (nhuận)" : ""}`;
+    const summary = `${lunarLabel} - ${getSolarTermName(date)}${holidayName ? ` - ${holidayName}` : ""}`;
     events.push({
-      summary: holidayName ? `${lunarLabel} - ${holidayName}` : lunarLabel,
-      description: `Tiết khí: ${getSolarTermName(date)}`,
+      summary,
+      description: "",
       date,
     });
   }
