@@ -101,16 +101,55 @@ function daysInSolarYear(year: number): number {
   return isLeap ? 366 : 365;
 }
 
+export interface IcsAllDayEventInput {
+  summary: string;
+  description: string;
+  date: SolarDate;
+}
+
+/** The calendar day after `d`, for the exclusive DTEND a one-day all-day event needs. */
+function nextDay(d: SolarDate): SolarDate {
+  const next = new Date(Date.UTC(d.year, d.month - 1, d.day + 1));
+  return { year: next.getUTCFullYear(), month: next.getUTCMonth() + 1, day: next.getUTCDate() };
+}
+
+/**
+ * Same VCALENDAR shape as buildIcsCalendar, but as genuine all-day events
+ * (DTSTART/DTEND;VALUE=DATE, with DTEND on the following day per RFC 5545's
+ * exclusive end date) and no VALARM support - only used for the day-info
+ * overlay below, never for the alarm-carrying anniversary reminders.
+ */
+export function buildAllDayIcsCalendar(events: IcsAllDayEventInput[]): string {
+  const dtstamp = nowAsUtcStamp();
+  const lines = ["BEGIN:VCALENDAR", "PRODID:-//taolicham.web//lunar calendar overlay//VI", "VERSION:2.0"];
+  for (const event of events) {
+    lines.push(
+      "BEGIN:VEVENT",
+      `DESCRIPTION:${escapeText(event.description)}`,
+      `DTEND;VALUE=DATE:${formatDateStamp(nextDay(event.date))}`,
+      `DTSTAMP:${dtstamp}`,
+      `DTSTART;VALUE=DATE:${formatDateStamp(event.date)}`,
+      "SEQUENCE:0",
+      `SUMMARY:${escapeText(event.summary)}`,
+      `UID:${crypto.randomUUID()}`,
+      "END:VEVENT",
+    );
+  }
+  lines.push("END:VCALENDAR");
+  return lines.join("\r\n") + "\r\n";
+}
+
 /**
  * One all-day event per day of the given solar year, titled with the lunar
  * date ("ngày/tháng", plus "(nhuận)" for a leap month) and the holiday name
  * when that day is one of the well-known lunar festivals, with the day's
  * solar term (tiết khí) added in the description - a full-year lunar date
- * overlay a user can import into any calendar app.
+ * overlay a user can import into any calendar app. Build the .ics text with
+ * buildAllDayIcsCalendar, not buildIcsCalendar.
  */
-export function buildLunarYearEvents(year: number): IcsEventInput[] {
+export function buildLunarYearEvents(year: number): IcsAllDayEventInput[] {
   const totalDays = daysInSolarYear(year);
-  const events: IcsEventInput[] = [];
+  const events: IcsAllDayEventInput[] = [];
   for (let dayOfYear = 0; dayOfYear < totalDays; dayOfYear++) {
     const jsDate = new Date(Date.UTC(year, 0, 1 + dayOfYear));
     const date: SolarDate = { year: jsDate.getUTCFullYear(), month: jsDate.getUTCMonth() + 1, day: jsDate.getUTCDate() };

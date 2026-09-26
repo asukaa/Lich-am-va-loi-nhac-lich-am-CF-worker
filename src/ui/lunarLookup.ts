@@ -10,7 +10,7 @@ import {
   solarToLunar,
 } from "../core/lunarCalendar";
 import { getLunarHolidayName } from "../core/lunarHolidays";
-import { buildIcsCalendar, buildLunarYearEvents, downloadIcsFile } from "../services/icsExport";
+import { buildAllDayIcsCalendar, buildLunarYearEvents, downloadIcsFile } from "../services/icsExport";
 import { escapeHtml } from "./escapeHtml";
 
 interface SelectedDate {
@@ -423,7 +423,7 @@ export function wireLunarLookup(onChange: () => void): void {
     }
     const events = Array.from({ length: yearCount }, (_, i) => from + i).flatMap((y) => buildLunarYearEvents(y));
     const filename = from === to ? `lich-am-${from}.ics` : `lich-am-${from}-${to}.ics`;
-    downloadIcsFile(filename, buildIcsCalendar(events));
+    downloadIcsFile(filename, buildAllDayIcsCalendar(events));
   });
   document.getElementById("year-view-year-input")?.addEventListener("change", (e) => {
     const value = Number((e.target as HTMLInputElement).value);

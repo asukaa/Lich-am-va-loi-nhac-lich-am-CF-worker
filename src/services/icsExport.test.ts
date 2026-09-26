@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildIcsCalendar, buildLunarYearEvents } from "./icsExport";
+import { buildAllDayIcsCalendar, buildIcsCalendar, buildLunarYearEvents } from "./icsExport";
 
 function parseIcs(content: string): Record<string, string>[] {
   const events: Record<string, string>[] = [];
@@ -148,5 +148,34 @@ describe("buildLunarYearEvents", () => {
 
     const tetDay = events.find((e) => e.summary.includes("Tết Nguyên Đán"))!;
     expect(tetDay.summary).toBe("1/1 - Tết Nguyên Đán");
+  });
+});
+
+describe("buildAllDayIcsCalendar", () => {
+  it("emits genuine all-day events (VALUE=DATE) with the exclusive DTEND on the following day", () => {
+    const ics = buildAllDayIcsCalendar([
+      { summary: "25/12", description: "Tiết khí: Vũ Thủy", date: { year: 2026, month: 2, day: 12 } },
+    ]);
+    const [event] = parseIcs(ics);
+
+    expect(event["DTSTART;VALUE=DATE"]).toBe("20260212");
+    expect(event["DTEND;VALUE=DATE"]).toBe("20260213");
+    expect(event.DTSTART).toBeUndefined();
+    expect(event.DTEND).toBeUndefined();
+  });
+
+  it("rolls the exclusive DTEND correctly across month and year boundaries", () => {
+    const ics = buildAllDayIcsCalendar([
+      { summary: "a", description: "", date: { year: 2026, month: 2, day: 28 } },
+      { summary: "b", description: "", date: { year: 2026, month: 12, day: 31 } },
+    ]);
+    const [feb, dec] = parseIcs(ics);
+    expect(feb["DTEND;VALUE=DATE"]).toBe("20260301");
+    expect(dec["DTEND;VALUE=DATE"]).toBe("20270101");
+  });
+
+  it("never includes a VALARM, unlike buildIcsCalendar", () => {
+    const ics = buildAllDayIcsCalendar([{ summary: "x", description: "", date: { year: 2026, month: 1, day: 1 } }]);
+    expect(ics).not.toContain("VALARM");
   });
 });
