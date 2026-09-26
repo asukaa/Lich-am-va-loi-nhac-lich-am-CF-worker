@@ -66,18 +66,17 @@ function renderDayCell(
   const isWeekend = weekdayIdx >= 5;
   const isToday = isCurrentMonth && today.getDate() === dayOfMonth;
   const isSacredDay = lunar.day === 1 || lunar.day === 15;
-  // Mark the boundary where the solar term (tiết khí) changes. Consecutive
-  // days sit side by side within a week row (mark the right edge), except
-  // across a row wrap (Sunday -> next Monday), where they're diagonal, not
-  // adjacent - mark the new row's top edge instead so the cue still lands
-  // next to one of the two days involved.
-  const termToday = getSolarTermIndex({ year, month, day: dayOfMonth });
-  const isTermChangeAfter =
-    weekdayIdx !== 6 &&
-    dayOfMonth < totalDaysInMonth &&
-    termToday !== getSolarTermIndex({ year, month, day: dayOfMonth + 1 });
-  const isTermChangeBefore =
-    weekdayIdx === 0 && dayOfMonth > 1 && termToday !== getSolarTermIndex({ year, month, day: dayOfMonth - 1 });
+  // Mark the last day of each solar term (tiết khí) with a right-edge line -
+  // an attribute of that single day, regardless of which grid column it
+  // falls in, so it never has to line up with a neighboring cell.
+  const nextCalendarDay = new Date(Date.UTC(year, month - 1, dayOfMonth + 1));
+  const isTermEndDay =
+    getSolarTermIndex({ year, month, day: dayOfMonth }) !==
+    getSolarTermIndex({
+      year: nextCalendarDay.getUTCFullYear(),
+      month: nextCalendarDay.getUTCMonth() + 1,
+      day: nextCalendarDay.getUTCDate(),
+    });
   // Show "ngày/tháng âm" whenever a new lunar month starts, and also on the
   // first/last day of the displayed solar month, so it's clear at a glance
   // which lunar month(s) that solar month spans.
@@ -100,8 +99,7 @@ function renderDayCell(
     holidayName ? "holiday" : "",
     lunar.isLeap ? "leap-month" : "",
     isSacredDay ? "sacred-day" : "",
-    isTermChangeAfter ? "term-change-after" : "",
-    isTermChangeBefore ? "term-change-before" : "",
+    isTermEndDay ? "term-end-day" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -305,8 +303,9 @@ export function renderLunarLookup(): string {
       <p class="hint">
         Số nhỏ bên dưới là ngày âm lịch (theo âm lịch Việt Nam, múi giờ UTC+7); hiện "ngày/tháng" vào đầu tháng âm
         và vào ngày đầu/cuối tháng dương. "*" hoặc "(nh)" = tháng nhuận. Cột "Tuần" là số tuần trong năm. Ô tô màu
-        vàng là ngày lễ/tết âm lịch, ô có chấm xanh ở góc phải là ngày thuộc tháng nhuận. Số đỏ đậm là ngày mùng 1
-        hoặc rằm (15) âm lịch. Vạch vàng giữa 2 ô là ranh giới đổi tiết khí. Bấm vào 1 ngày để xem chi tiết.
+        vàng là ngày lễ/tết âm lịch, ô có chấm xanh ở góc phải là ngày thuộc tháng nhuận. Số âm lịch đỏ đậm là ngày
+        mùng 1 hoặc rằm (15) âm lịch. Vạch vàng bên phải ô là ngày cuối cùng của một tiết khí. Bấm vào 1 ngày để xem
+        chi tiết.
       </p>
       <div class="export-range">
         <label>Từ năm

@@ -33,9 +33,9 @@ function renderHelpModal(): string {
           <li>Bấm "Lịch năm" để xem cả 12 tháng cùng lúc; gõ số năm trực tiếp vào ô năm ở đầu bảng hoặc dùng "▲ ▼".
             Năm nào có tháng nhuận sẽ có chữ "(nhuận tháng X)" ngay cạnh tên năm (Can Chi), nêu rõ tháng âm nào
             nhuận. Số năm ở ô tra cứu cũng tự chuyển sang màu xanh khi rơi vào năm âm nhuận.</li>
-          <li>Ô có chấm xanh ở góc phải là ngày thuộc tháng nhuận; ô tô màu vàng là ngày lễ/tết âm lịch; số ngày
+          <li>Ô có chấm xanh ở góc phải là ngày thuộc tháng nhuận; ô tô màu vàng là ngày lễ/tết âm lịch; số âm lịch
             in đỏ đậm là ngày mùng 1 hoặc rằm (15) âm lịch.</li>
-          <li>Vạch vàng giữa 2 ô ngày liền kề đánh dấu thời điểm tiết khí thay đổi.</li>
+          <li>Vạch vàng bên phải một ô đánh dấu đó là ngày cuối cùng của một tiết khí.</li>
           <li>Chọn "Từ năm" / "Đến năm" rồi bấm "Xuất lịch âm ... (.ics)" để tải file chứa toàn bộ ngày âm (kèm
             tiết khí từng ngày) của các năm đó, nhập được vào Google Calendar, Outlook, Apple Calendar...</li>
         </ul>

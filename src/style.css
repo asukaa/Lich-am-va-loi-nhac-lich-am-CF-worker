@@ -491,13 +491,9 @@ button.delete {
   opacity: 1;
 }
 
-/* Vạch vàng đánh dấu ranh giới giữa 2 ngày khi tiết khí thay đổi. */
-.lookup-grid td.term-change-after {
+/* Vạch vàng đánh dấu ngày cuối cùng của một tiết khí. */
+.lookup-grid td.term-end-day {
   border-right: 3px solid var(--term-line);
-}
-
-.lookup-grid td.term-change-before {
-  border-top: 3px solid var(--term-line);
 }
 
 .lookup-grid td.lookup-day {
