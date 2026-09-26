@@ -1,4 +1,4 @@
-import { solarToLunar, type SolarDate } from "../core/lunarCalendar";
+import { getSolarTermName, solarToLunar, type SolarDate } from "../core/lunarCalendar";
 import { getLunarHolidayName } from "../core/lunarHolidays";
 import { downloadBlob } from "./download";
 
@@ -104,8 +104,9 @@ function daysInSolarYear(year: number): number {
 /**
  * One all-day event per day of the given solar year, titled with the lunar
  * date ("ngày/tháng", plus "(nhuận)" for a leap month) and the holiday name
- * when that day is one of the well-known lunar festivals - a full-year lunar
- * date overlay a user can import into any calendar app.
+ * when that day is one of the well-known lunar festivals, with the day's
+ * solar term (tiết khí) added in the description - a full-year lunar date
+ * overlay a user can import into any calendar app.
  */
 export function buildLunarYearEvents(year: number): IcsEventInput[] {
   const totalDays = daysInSolarYear(year);
@@ -118,7 +119,7 @@ export function buildLunarYearEvents(year: number): IcsEventInput[] {
     const lunarLabel = `${lunar.day}/${lunar.month}${lunar.isLeap ? " (nhuận)" : ""}`;
     events.push({
       summary: holidayName ? `${lunarLabel} - ${holidayName}` : lunarLabel,
-      description: "",
+      description: `Tiết khí: ${getSolarTermName(date)}`,
       date,
     });
   }

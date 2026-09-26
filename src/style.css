@@ -13,6 +13,8 @@
   --holiday-text: #92650a;
   --leap-tint: #e0f2e9;
   --leap-text: #1f7a4d;
+  --sacred-text: #b91c1c;
+  --term-line: #ca8a04;
   --hover-tint: #e7defb;
   --sans: system-ui, "Segoe UI", Roboto, sans-serif;
 
@@ -39,6 +41,8 @@
     --holiday-text: #f2c34d;
     --leap-tint: #1c3a2c;
     --leap-text: #6fd6a3;
+    --sacred-text: #fca5a5;
+    --term-line: #fbbf24;
     --hover-tint: #3a3350;
   }
 }
@@ -480,6 +484,21 @@ button.delete {
   opacity: 1;
 }
 
+/* Mùng 1 và ngày rằm (15 âm lịch): chỉ chữ âm lịch đỏ đậm, chữ dương lịch giữ nguyên quy tắc thường. */
+.lookup-grid td.sacred-day:not(.today) .lunar-day {
+  color: var(--sacred-text);
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Vạch vàng đánh dấu ranh giới giữa 2 ngày khi tiết khí thay đổi. */
+.lookup-grid td.term-change-after {
+  border-right: 3px solid var(--term-line);
+}
+
+.lookup-grid td.term-change-before {
+  border-top: 3px solid var(--term-line);
+}
 
 .lookup-grid td.lookup-day {
   cursor: pointer;

@@ -31,10 +31,13 @@ function renderHelpModal(): string {
           <li>Bấm vào 1 ô ngày để xem chi tiết: ngày dương, ngày âm, Can Chi ngày/tháng/năm, tiết khí, ngày lễ/tết
             âm lịch (nếu có) và thông tin tháng nhuận của năm đó.</li>
           <li>Bấm "Lịch năm" để xem cả 12 tháng cùng lúc; gõ số năm trực tiếp vào ô năm ở đầu bảng hoặc dùng "▲ ▼".
-            Năm nào có tháng nhuận sẽ có chữ "(nhuận)" ngay cạnh tên năm (Can Chi).</li>
-          <li>Ô có chấm xanh ở góc phải là ngày thuộc tháng nhuận; ô tô màu vàng là ngày lễ/tết âm lịch.</li>
-          <li>Chọn "Từ năm" / "Đến năm" rồi bấm "Xuất lịch âm ... (.ics)" để tải file chứa toàn bộ ngày âm của các
-            năm đó, nhập được vào Google Calendar, Outlook, Apple Calendar...</li>
+            Năm nào có tháng nhuận sẽ có chữ "(nhuận tháng X)" ngay cạnh tên năm (Can Chi), nêu rõ tháng âm nào
+            nhuận. Số năm ở ô tra cứu cũng tự chuyển sang màu xanh khi rơi vào năm âm nhuận.</li>
+          <li>Ô có chấm xanh ở góc phải là ngày thuộc tháng nhuận; ô tô màu vàng là ngày lễ/tết âm lịch; số ngày
+            in đỏ đậm là ngày mùng 1 hoặc rằm (15) âm lịch.</li>
+          <li>Vạch vàng giữa 2 ô ngày liền kề đánh dấu thời điểm tiết khí thay đổi.</li>
+          <li>Chọn "Từ năm" / "Đến năm" rồi bấm "Xuất lịch âm ... (.ics)" để tải file chứa toàn bộ ngày âm (kèm
+            tiết khí từng ngày) của các năm đó, nhập được vào Google Calendar, Outlook, Apple Calendar...</li>
         </ul>
 
         <h3>2. Tạo lịch nhắc công việc (giỗ, kỵ nhật...)</h3>
